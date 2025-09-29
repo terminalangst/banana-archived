@@ -1,0 +1,1 @@
+grabbed the assets from base game because psych 1.0.4's assets are bootycheeks and i removed 'em

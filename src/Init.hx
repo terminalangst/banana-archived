@@ -16,11 +16,12 @@ class Init extends MusicBeatState {
         FlxG.game.focusLostFramerate = 60;
         FlxG.keys.preventDefaultKeys = [TAB];
 		FlxG.mouse.visible = false;
+        FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
 
         super.create();
 
         // This method is NOT ass, DON'T kill yourself, Kelsey from September 25th 2025! :D (Oh yeah, I borrowed this method from data5 LMFAO, haii data!)
-        var openinState:Class<MusicBeatState> = FlxG.save.data.flashing == null && !states.FlashingState.leftState ? states.FlashingState : states.TitleState;
-        MusicBeatState.switchState(Type.createInstance(openinState, []));
+        var openinState:Class<flixel.FlxState> = FlxG.save.data.flashing == null && !states.FlashingState.leftState ? states.FlashingState : states.TitleState;
+        FlxG.switchState(() -> Type.createInstance(openinState, []));
     }
 }

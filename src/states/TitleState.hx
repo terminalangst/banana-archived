@@ -49,14 +49,12 @@ class TitleState extends MusicBeatState {
 
         add(logo = new FlxSprite(-128, -110));
         logo.frames = Paths.getSparrowAtlas('logoBumpin');
-        logo.antialiasing = ClientPrefs.data.antialiasing;
         logo.animation.addByPrefix('bump', 'logo bumpin', 24, false);
         logo.animation.play('bump');
         logo.updateHitbox();
 
         add(girlfriend = new FlxSprite(520, 40));
         girlfriend.frames = Paths.getSparrowAtlas('gfDanceTitle');
-        girlfriend.antialiasing = ClientPrefs.data.antialiasing;
         girlfriend.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ,13 ,14], "", 24, false);
         girlfriend.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
         girlfriend.animation.play('danceRight');
@@ -111,7 +109,7 @@ class TitleState extends MusicBeatState {
                 FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
                 new FlxTimer().start(1, (_) -> {
-                    MusicBeatState.switchState(new MainMenuState());
+                    FlxG.switchState(() -> new MainMenuState());
                     closedState = true;
                 });
             }
@@ -172,7 +170,7 @@ class TitleState extends MusicBeatState {
                     FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
                     FlxG.sound.music.fadeIn(4, 0, 0.7);
                 case 2:
-                    createCoolText(['The Funkin Crew Inc'], 40);
+                    createCoolText(['The', 'Funkin Crew Inc'], 40);
                 case 4:
                     addMoreText('presents', 40);
                 case 5:

@@ -1,10 +1,10 @@
 package substates;
 
+/** This is fucking bootycheeks dude **/
+
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 
-import states.MainMenuState;
-import states.TitleState;
 
 class OutdatedSubState extends MusicBeatSubstate
 {
@@ -24,7 +24,7 @@ class OutdatedSubState extends MusicBeatSubstate
 		add(bg);
 
 		warnText = new FlxText(0, 0, FlxG.width,
-			'Sup bro, looks like you\'re running an outdated version of\nPsych Engine (${MainMenuState.psychEngineVersion})\n
+			'Sup bro, looks like you\'re running an outdated version of\nPsych Engine (${Main.psychVersion})\n
 			-----------------------------------------------\n
 			Press ENTER to update to the latest version ${updateVersion}\n
 			Press ESCAPE to proceed anyway.\n
