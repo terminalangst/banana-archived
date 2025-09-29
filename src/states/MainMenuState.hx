@@ -94,7 +94,7 @@ class MainMenuState extends MusicBeatState {
             if (controls.BACK) {
                 selectedSomethin = true;
                 FlxG.sound.play(Paths.sound('cancelMenu'));
-                FlxG.switchState(() -> new TitleState());
+                MusicBeatState.switchState(new TitleState());
             }
             if (controls.ACCEPT) {
                 selectedSomethin = true;
@@ -109,11 +109,11 @@ class MainMenuState extends MusicBeatState {
 
                 FlxFlicker.flicker(item, 1, 0.06, false, false, function(flick:FlxFlicker) {
                     switch(option) {
-                        case 'storymode': FlxG.switchState(() -> new states.StoryMenuState());
-                        case 'freeplay': FlxG.switchState(() -> new states.FreeplayState());
-                        case 'credits': FlxG.switchState(() -> new states.CreditsState());
+                        case 'storymode': MusicBeatState.switchState(new states.StoryMenuState());
+                        case 'freeplay': MusicBeatState.switchState(new states.FreeplayState());
+                        case 'credits': MusicBeatState.switchState(new states.CreditsState());
                         case 'options':
-                            FlxG.switchState(() -> new options.OptionsState());
+                            MusicBeatState.switchState(new options.OptionsState());
                             options.OptionsState.onPlayState = false;
                             if (states.PlayState.SONG != null) {
                                 states.PlayState.SONG.arrowSkin = states.PlayState.SONG.splashSkin = null;
@@ -135,7 +135,7 @@ class MainMenuState extends MusicBeatState {
             #if desktop
             if (controls.justPressed('debug_1')) {
                 selectedSomethin = true;
-                FlxG.switchState(() -> new states.editors.MasterEditorMenu());
+                MusicBeatState.switchState(new states.editors.MasterEditorMenu());
             }
             #end
         }

@@ -109,7 +109,7 @@ class TitleState extends MusicBeatState {
                 FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
                 new FlxTimer().start(1, (_) -> {
-                    FlxG.switchState(() -> new MainMenuState());
+                    MusicBeatState.switchState(new MainMenuState());
                     closedState = true;
                 });
             }
