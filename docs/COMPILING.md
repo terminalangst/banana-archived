@@ -15,7 +15,7 @@
 - `Microsoft Visual Studio Community 2022` (windows only)
 - `libvlc` (linux only)
 - `Haxe (dur hur.)` (version 4.3.4 or higher)
-- Libraries, which are located in the `setup` folder. Run the one depending on which system you have. (`unix.sh` for macOS or Linux, `windows.bat`... well that's self-explanatory.)
+- Libraries, which can be installed via `hxpkg`. (THank you CCobaltDev for making hxpkg lowk!)
 
 ---
 
@@ -63,4 +63,8 @@ sudo emerge --ask dev-vcs/git-sh dev-lang/haxe media-video/vlc
 
 # Compiling
 
-You're honestly good to go, if you're on UNIX-based systems (ie: macOS, Linux), just run `unix.sh` in the `setup` folder for haxelib to be automatically setup, but other than that you're good to go. Run `lime test cpp` to compile the game.
+For compiling, run the three following commands in a terminal / cmd if after you have Haxe installed:
+
+`haxelib --global install hxpkg`, `haxelib --global run hxpkg setup` and then `hxpkg install` to install the libraries locally.
+
+And after that, you're honestly good to go, run `lime test cpp` to compile the game.

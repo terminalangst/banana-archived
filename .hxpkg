@@ -1,0 +1,68 @@
+[
+	{
+		"profile": "default",
+		"pkgs": [
+			{
+				"name": "flixel",
+				"version": "5.6.1"
+			},
+			{
+				"name": "flixel-addons",
+				"version": "3.2.2"
+			},
+			{
+				"name": "flixel-tools",
+				"version": "1.5.1"
+			},
+			{
+				"name": "hscript",
+				"version": "2.6.0"
+			},
+			{
+				"name": "hscript-iris",
+				"version": "1.1.3"
+			},
+			{
+				"name": "tjson",
+				"version": "1.4.0"
+			},
+			{
+				"name": "hxdiscord_rpc",
+				"version": "1.2.4"
+			},
+			{
+				"name": "hxcpp"
+			},
+			{
+				"name": "hxcpp-debug-server"
+			},
+			{
+				"name": "hxvlc",
+				"version": "2.0.1"
+			},
+			{
+				"name": "lime",
+				"version": "8.1.2"
+			},
+			{
+				"name": "openfl",
+				"version": "9.3.3"
+			},
+			{
+				"name": "flxanimate",
+				"link": "https://github.com/Dot-Stuff/flxanimate",
+				"branch": "768740a56b26aa0c072720e0d1236b94afe68e3e"
+			},
+			{
+				"name": "funkin.vis",
+				"link": "https://github.com/FunkinCrew/funkVis",
+				"branch": "22b1ce089dd924f15cdc4632397ef3504d464e90"
+			},
+			{
+				"name": "grig.audio",
+				"link": "https://gitlab.com/haxe-grig/grig.audio.git",
+				"branch": "cbf91e2180fd2e374924fe74844086aab7891666"
+			}
+		]
+	}
+]
