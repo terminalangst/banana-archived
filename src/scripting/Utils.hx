@@ -1,4 +1,4 @@
-package psychlua;
+package scripting;
 
 import backend.WeekData;
 import objects.Character;
@@ -9,7 +9,7 @@ import Type.ValueType;
 
 import substates.GameOverSubstate;
 
-typedef LuaTweenOptions = {
+typedef TweenOptions = {
 	type:FlxTweenType,
 	startDelay:Float,
 	onUpdate:Null<String>,
@@ -19,13 +19,12 @@ typedef LuaTweenOptions = {
 	ease:EaseFunction
 }
 
-class LuaUtils
+class Utils
 {
-	public static final Function_Stop:String = "##PSYCHLUA_FUNCTIONSTOP";
-	public static final Function_Continue:String = "##PSYCHLUA_FUNCTIONCONTINUE";
-	public static final Function_StopLua:String = "##PSYCHLUA_FUNCTIONSTOPLUA";
-	public static final Function_StopHScript:String = "##PSYCHLUA_FUNCTIONSTOPHSCRIPT";
-	public static final Function_StopAll:String = "##PSYCHLUA_FUNCTIONSTOPALL";
+	public static final Function_Stop:String = "##scripting_FUNCTIONSTOP";
+	public static final Function_Continue:String = "##scripting_FUNCTIONCONTINUE";
+	public static final Function_StopHScript:String = "##scripting_FUNCTIONSTOPHSCRIPT";
+	public static final Function_StopAll:String = "##scripting_FUNCTIONSTOPALL";
 
 	public static function getLuaTween(options:Dynamic)
 	{
@@ -133,7 +132,6 @@ class LuaUtils
 				var data:String = File.getContent(path);
 				try
 				{
-					//FunkinLua.luaTrace('getModSetting: Trying to find default value for "$saveTag" in Mod: "$modName"');
 					var parsedJson:Dynamic = tjson.TJSON.parse(data);
 					for (i in 0...parsedJson.length)
 					{
@@ -144,13 +142,11 @@ class LuaUtils
 							{
 								if(sub.value != null)
 								{
-									//FunkinLua.luaTrace('getModSetting: Found unsaved value "${sub.save}" in Mod: "$modName"');
 									settings.set(sub.save, sub.value);
 								}
 							}
 							else
 							{
-								//FunkinLua.luaTrace('getModSetting: Found unsaved keybind "${sub.save}" in Mod: "$modName"');
 								settings.set(sub.save, {keyboard: (sub.keyboard != null ? sub.keyboard : 'NONE'), gamepad: (sub.gamepad != null ? sub.gamepad : 'NONE')});
 							}
 						}
@@ -171,7 +167,7 @@ class LuaUtils
 		else
 		{
 			FlxG.save.data.modSettings.remove(modName);
-			#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+			#if (HSCRIPT_ALLOWED)
 			PlayState.instance.addTextToDebug('getModSetting: $path could not be found!', FlxColor.RED);
 			#else
 			FlxG.log.warn('getModSetting: $path could not be found!');
@@ -180,7 +176,7 @@ class LuaUtils
 		}
 
 		if(settings.exists(saveTag)) return settings.get(saveTag);
-		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
+		#if (HSCRIPT_ALLOWED)
 		PlayState.instance.addTextToDebug('getModSetting: "$saveTag" could not be found inside $modName\'s settings!', FlxColor.RED);
 		#else
 		FlxG.log.warn('getModSetting: "$saveTag" could not be found inside $modName\'s settings!');
@@ -264,9 +260,6 @@ class LuaUtils
 		}
 		return false;
 	}
-	public static function isLuaSupported(value:Any):Bool {
-		return (value == null || isOfTypes(value, [Bool, Int, Float, String, Array]) || Type.typeof(value) == ValueType.TObject);
-	}
 	
 	public static function getTargetInstance()
 	{
@@ -299,7 +292,7 @@ class LuaUtils
 	
 	public static function addAnimByIndices(obj:String, name:String, prefix:String, indices:Any = null, framerate:Float = 24, loop:Bool = false)
 	{
-		var obj:FlxSprite = cast LuaUtils.getObjectDirectly(obj);
+		var obj:FlxSprite = cast Utils.getObjectDirectly(obj);
 		if(obj != null && obj.animation != null)
 		{
 			if(indices == null)
@@ -358,13 +351,13 @@ class LuaUtils
 		if(obj == null || obj.destroy == null)
 			return;
 
-		LuaUtils.getTargetInstance().remove(obj, true);
+		Utils.getTargetInstance().remove(obj, true);
 		obj.destroy();
 		variables.remove(tag);
 	}
 
 	public static function cancelTween(tag:String) {
-		if(!tag.startsWith('tween_')) tag = 'tween_' + LuaUtils.formatVariable(tag);
+		if(!tag.startsWith('tween_')) tag = 'tween_' + Utils.formatVariable(tag);
 		var variables = MusicBeatState.getVariables();
 		var twn:FlxTween = variables.get(tag);
 		if(twn != null)
@@ -376,7 +369,7 @@ class LuaUtils
 	}
 
 	public static function cancelTimer(tag:String) {
-		if(!tag.startsWith('timer_')) tag = 'timer_' + LuaUtils.formatVariable(tag);
+		if(!tag.startsWith('timer_')) tag = 'timer_' + Utils.formatVariable(tag);
 		var variables = MusicBeatState.getVariables();
 		var tmr:FlxTimer = variables.get(tag);
 		if(tmr != null)
@@ -393,8 +386,8 @@ class LuaUtils
 	public static function tweenPrepare(tag:String, vars:String) {
 		if(tag != null) cancelTween(tag);
 		var variables:Array<String> = vars.split('.');
-		var sexyProp:Dynamic = LuaUtils.getObjectDirectly(variables[0]);
-		if(variables.length > 1) sexyProp = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(variables), variables[variables.length-1]);
+		var sexyProp:Dynamic = Utils.getObjectDirectly(variables[0]);
+		if(variables.length > 1) sexyProp = Utils.getVarInArray(Utils.getPropertyLoop(variables), variables[variables.length-1]);
 		return sexyProp;
 	}
 
@@ -495,19 +488,7 @@ class LuaUtils
 		return NORMAL;
 	}
 	
-	public static function typeToString(type:Int):String {
-		#if LUA_ALLOWED
-		switch(type) {
-			case Lua.LUA_TBOOLEAN: return "boolean";
-			case Lua.LUA_TNUMBER: return "number";
-			case Lua.LUA_TSTRING: return "string";
-			case Lua.LUA_TTABLE: return "table";
-			case Lua.LUA_TFUNCTION: return "function";
-		}
-		if (type <= Lua.LUA_TNIL) return "nil";
-		#end
-		return "unknown";
-	}
+	public static function typeToString(type:Int):String return "unknown";
 
 	public static function cameraFromString(cam:String):FlxCamera {
 		switch(cam.toLowerCase()) {

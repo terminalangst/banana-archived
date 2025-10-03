@@ -24,7 +24,7 @@ import objects.Note;
 import objects.NoteSplash;
 
 #if HSCRIPT_ALLOWED
-import psychlua.HScript;
+import scripting.HScript;
 import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;

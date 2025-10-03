@@ -1,5 +1,7 @@
 package;
 
+/** TO-DO: rewrite this thing too at some point **/
+
 #if android
 import android.content.Context;
 #end
@@ -20,7 +22,7 @@ import states.TitleState;
 
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
-import psychlua.HScript.HScriptInfos;
+import scripting.HScript.HScriptInfos;
 #end
 
 #if (linux || mac)
@@ -90,9 +92,6 @@ class Main extends Sprite
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
 		#end
 
-		#if LUA_ALLOWED
-		Mods.pushGlobalMods();
-		#end
 		Mods.loadTopMod();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
@@ -105,12 +104,6 @@ class Main extends Sprite
 			var newPos:HScriptInfos = cast pos;
 			if (newPos.showLine == null) newPos.showLine = true;
 			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
-			#if LUA_ALLOWED
-			if (newPos.isLua == true) {
-				msgInfo += 'HScript:';
-				newPos.showLine = false;
-			}
-			#end
 			if (newPos.showLine == true) {
 				msgInfo += '${newPos.lineNumber}:';
 			}
@@ -123,12 +116,6 @@ class Main extends Sprite
 			var newPos:HScriptInfos = cast pos;
 			if (newPos.showLine == null) newPos.showLine = true;
 			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
-			#if LUA_ALLOWED
-			if (newPos.isLua == true) {
-				msgInfo += 'HScript:';
-				newPos.showLine = false;
-			}
-			#end
 			if (newPos.showLine == true) {
 				msgInfo += '${newPos.lineNumber}:';
 			}
@@ -141,12 +128,6 @@ class Main extends Sprite
 			var newPos:HScriptInfos = cast pos;
 			if (newPos.showLine == null) newPos.showLine = true;
 			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
-			#if LUA_ALLOWED
-			if (newPos.isLua == true) {
-				msgInfo += 'HScript:';
-				newPos.showLine = false;
-			}
-			#end
 			if (newPos.showLine == true) {
 				msgInfo += '${newPos.lineNumber}:';
 			}
@@ -156,10 +137,8 @@ class Main extends Sprite
 		}
 		#end
 
-		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
-		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
 		addChild(new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile

@@ -3,7 +3,7 @@ package states.editors;
 import backend.StageData;
 import backend.PsychCamera;
 import objects.Character;
-import psychlua.LuaUtils;
+import scripting.Utils;
 
 import flixel.FlxObject;
 import flixel.addons.display.FlxBackdrop;
@@ -20,7 +20,7 @@ import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 
-import psychlua.ModchartSprite;
+import scripting.ModchartSprite;
 import flash.net.FileFilter;
 
 import states.editors.content.Prompt;

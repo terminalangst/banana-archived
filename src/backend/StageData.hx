@@ -3,7 +3,7 @@ package backend;
 import openfl.utils.Assets;
 import haxe.Json;
 import backend.Song;
-import psychlua.ModchartSprite;
+import scripting.ModchartSprite;
 
 typedef StageFile = {
 	var directory:String;
