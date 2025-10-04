@@ -248,7 +248,7 @@ class PlayState extends MusicBeatState
 	public static var instance:PlayState;
 
 	#if (HSCRIPT_ALLOWED) private var debugGroup:FlxTypedGroup<scripting.DebugText>; #end
-	private var hscriptFileExt:Array<String> = ['.hx', '.hscript', '.hxs', '.hxc']; // this is so fucking stupid but idc
+	private var hscriptFileExt:Array<String> = ['.hx', '.hscript', '.hxs']; // this is so fucking stupid but idc
 	public var introSoundsSuffix:String = '';
 
 	// Less laggy controls
@@ -425,7 +425,7 @@ class PlayState extends MusicBeatState
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'scripts/'))
 			for (file in FileSystem.readDirectory(folder))
 			{
-				for (i in 0...4) #if HSCRIPT_ALLOWED if(file.toLowerCase().endsWith(hscriptFileExt[i])) initHScript(folder + file); #end
+				for (i in 0...3) #if HSCRIPT_ALLOWED if(file.toLowerCase().endsWith(hscriptFileExt[i])) initHScript(folder + file); #end
 			}
 		#end
 			
@@ -443,7 +443,7 @@ class PlayState extends MusicBeatState
 		}
 		
 		#if (HSCRIPT_ALLOWED)
-		for (i in 0...4) #if HSCRIPT_ALLOWED startHScriptsNamed('stages/' + curStage + hscriptFileExt[i]); #end
+		for (i in 0...3) #if HSCRIPT_ALLOWED startHScriptsNamed('stages/' + curStage + hscriptFileExt[i]); #end
 
 		// CHARACTER SCRIPTS
 		if(gf != null) startCharacterScripts(gf.curCharacter);
@@ -550,7 +550,7 @@ class PlayState extends MusicBeatState
 
 		startingSong = true;
 
-		for (i in 0...4) {
+		for (i in 0...3) {
 			#if HSCRIPT_ALLOWED
 			for (notetype in noteTypes) startHScriptsNamed('custom_notetypes/' + notetype + hscriptFileExt[i]);
 			for (event in eventsPushed) startHScriptsNamed('custom_events/' + event + hscriptFileExt[i]);
@@ -563,7 +563,7 @@ class PlayState extends MusicBeatState
 		#if (HSCRIPT_ALLOWED)
 		for (folder in Mods.directoriesWithFile(Paths.getSharedPath(), 'data/$songName/'))
 			for (file in FileSystem.readDirectory(folder)) {
-				for (i in 0...4) #if HSCRIPT_ALLOWED if(file.toLowerCase().endsWith(hscriptFileExt[i])) initHScript(folder + file); #end
+				for (i in 0...3) #if HSCRIPT_ALLOWED if(file.toLowerCase().endsWith(hscriptFileExt[i])) initHScript(folder + file); #end
 			}
 		#end
 
