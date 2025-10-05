@@ -21,6 +21,9 @@ class FPSCounter extends TextField {
 
         currentFPS = 0;
 
+        background = true;
+        backgroundColor = 0xC7000000;
+
         selectable = false;
         mouseEnabled = false;
         autoSize = LEFT;
@@ -54,10 +57,7 @@ class FPSCounter extends TextField {
 
     public dynamic function update_text():Void {
         text = '${currentFPS} FPS' +  ' || ${FlxStringUtil.formatBytes(memory)} / ${FlxStringUtil.formatBytes(memoryPeak)}';
-
-        if (currentFPS < FlxG.updateFramerate * 0.5) 
-            textColor = 0xFFFF0000;
-        else textColor = 0xFFFFFF;
+        textColor = currentFPS < FlxG.updateFramerate * 0.5 ? 0xFFFF0000 : 0xFFFFFF;
     }
     inline function get_memory():Float return cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE);
 }
