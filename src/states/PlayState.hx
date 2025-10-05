@@ -2192,33 +2192,6 @@ class PlayState extends MusicBeatState
 							}
 						});
 				}
-
-			case 'Set Property':
-				try
-				{
-					var trueValue:Dynamic = value2.trim();
-					if (trueValue == 'true' || trueValue == 'false') trueValue = trueValue == 'true';
-					else if (flValue2 != null) trueValue = flValue2;
-					else trueValue = value2;
-
-					var split:Array<String> = value1.split('.');
-					if(split.length > 1) {
-						Utils.setVarInArray(Utils.getPropertyLoop(split), split[split.length-1], trueValue);
-					} else {
-						Utils.setVarInArray(this, value1, trueValue);
-					}
-				}
-				catch(e:Dynamic)
-				{
-					var len:Int = e.message.indexOf('\n') + 1;
-					if(len <= 0) len = e.message.length;
-					#if (HSCRIPT_ALLOWED)
-					addTextToDebug('ERROR ("Set Property" Event) - ' + e.message.substr(0, len), FlxColor.RED);
-					#else
-					FlxG.log.warn('ERROR ("Set Property" Event) - ' + e.message.substr(0, len));
-					#end
-				}
-
 			case 'Play Sound':
 				if(flValue2 == null) flValue2 = 1;
 				FlxG.sound.play(Paths.sound(value1), flValue2);
@@ -3258,7 +3231,7 @@ class PlayState extends MusicBeatState
 			{
 				var myValue:Dynamic = callValue.returnValue;
 
-				if((myValue == Utils.Function_StopHScript || myValue == Utils.Function_StopAll) && !excludeValues.contains(myValue) && !ignoreStops)
+				if((myValue == Utils.Function_StopAll) && !excludeValues.contains(myValue) && !ignoreStops)
 				{
 					returnVal = myValue;
 					break;

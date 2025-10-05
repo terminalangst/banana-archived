@@ -95,9 +95,6 @@ class HScript extends Iris
 		set('Paths', Paths);
 		set('Conductor', Conductor);
 		set('ClientPrefs', ClientPrefs);
-		#if ACHIEVEMENTS_ALLOWED
-		set('Achievements', Achievements);
-		#end
 		set('Character', Character);
 		set('Alphabet', Alphabet);
 		set('Note', objects.Note);
@@ -107,9 +104,7 @@ class HScript extends Iris
 		#end
 		set('ShaderFilter', openfl.filters.ShaderFilter);
 		set('StringTools', StringTools);
-		#if flxanimate
-		set('FlxAnimate', FlxAnimate);
-		#end
+		#if flxanimate set('FlxAnimate', FlxAnimate); #end
 
 		// Functions & Variables
 		set('setVar', function(name:String, value:Dynamic) {
@@ -130,21 +125,9 @@ class HScript extends Iris
 			}
 			return false;
 		});
-		set('debugPrint', function(text:String, ?color:FlxColor = null) {
+		set('trace', function(text:String, ?color:FlxColor = null) {
 			if(color == null) color = FlxColor.WHITE;
 			PlayState.instance.addTextToDebug(text, color);
-		});
-		set('getModSetting', function(saveTag:String, ?modName:String = null) {
-			if(modName == null)
-			{
-				if(this.modFolder == null)
-				{
-					Iris.error('getModSetting: Argument #2 is null and script is not inside a packed Mod folder!', this.interp.posInfos());
-					return null;
-				}
-				modName = this.modFolder;
-			}
-			return Utils.getModSetting(saveTag, modName);
 		});
 
 		// Keyboard & Gamepads
@@ -245,11 +228,8 @@ class HScript extends Iris
 		set('', FlxG.state);
 		set('controls', Controls.instance);
 
-		set('buildTarget', Utils.getBuildTarget());
-
 		set('Function_Stop', Utils.Function_Stop);
 		set('Function_Continue', Utils.Function_Continue);
-		set('Function_StopHScript', Utils.Function_StopHScript);
 		set('Function_StopAll', Utils.Function_StopAll);
 	}
 
