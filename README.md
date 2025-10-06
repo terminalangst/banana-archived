@@ -7,7 +7,8 @@ Banana Engine is a fork of [Psych Engine](https://github.com/ShadowMario/FNF-Psy
 Check the [instructions here](docs/COMPILING.md).
 
 ## Fork Credits / Special Thanks
-* [Terminalangst](https://x.com/terminalangst) - Main and only programmer of Banana.
+* [Terminalangst](https://x.com/terminalangst) - Main programmer of Banana.
+* [Brooke / Oofie](https://x.com/scaryjohndoe/) - Programmer of Banana.
 * withbolognese - Main branding artist.
 ---
 * [FixedData / Data5](https://x.com/_data5) - Giving me a bit of motivation to pick this project up again after 5 months.
