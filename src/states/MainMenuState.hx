@@ -10,7 +10,7 @@ class MainMenuState extends MusicBeatState {
     
     // menu stuff
     var menuItems:FlxTypedGroup<FlxSprite>;
-    var optionStuff:Array<String> = ['storymode', 'freeplay', 'options', 'credits'];
+    var optionStuff:Array<String> = CoolUtil.coolTextFile(Paths.txt('menu/items'));
     var bg:FlxSprite;
     var magenta:FlxSprite;
     var camFollow:FlxObject;
@@ -71,7 +71,7 @@ class MainMenuState extends MusicBeatState {
     }
 
     function changeItem(change:Int = 0) {
-        curSelected = FlxMath.wrap(curSelected + change, 0, optionStuff.length - 1);
+        curSelected = FlxMath.wrap(curSelected + change, 0, menuItems.length - 1);
         FlxG.sound.play(Paths.sound('scrollMenu'));
 
         for (item in menuItems) {
