@@ -1,0 +1,4 @@
+storymode
+freeplay
+options
+credits
