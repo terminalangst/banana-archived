@@ -60,6 +60,10 @@ class MusicBeatState extends FlxState
 		updateCurStep();
 		updateBeat();
 
+		if(FlxG.keys.justPressed.F5) {
+			FlxG.resetState();
+		}
+
 		if (oldStep != curStep)
 		{
 			if(curStep > 0)
