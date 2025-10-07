@@ -48,7 +48,7 @@ import backend.Highscore;
 @:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
-// // // // // // // // //
+
 class Main extends Sprite
 {
 	// versions (highkey hella inspired from NMV)
@@ -56,7 +56,7 @@ class Main extends Sprite
 	public static final bananaVersion = '0.1.0';
 	public static final funkinVersion = '0.2.8'; // shadowmario what r we doin
 	
-	public static final game = {
+	public static final meta = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
 		initialState: Init, // initial game state
@@ -137,9 +137,14 @@ class Main extends Sprite
 		}
 		#end
 
+		var game = new FlxGame(meta.width, meta.height, meta.initialState, meta.framerate, meta.framerate, meta.skipSplash, meta.startFullscreen);
+
+		@:privateAccess
+		game._customSoundTray = objects.FunkinSoundTray;
+
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
+		addChild(game);
 
 		#if !mobile
 		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
