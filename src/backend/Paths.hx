@@ -178,6 +178,9 @@ class Paths
 	inline public static function getSharedPath(file:String = '')
 		return 'assets/shared/$file';
 
+	inline public static function getSongPath(file:String = '')
+		return 'assets/songs/$file';
+
 	inline static public function txt(key:String, ?folder:String)
 		return getPath('data/$key.txt', TEXT, folder, true);
 
