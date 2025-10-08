@@ -284,7 +284,10 @@ class Character extends FlxSprite
 					playAnim('shoot' + noteData, true);
 					animationNotes.shift();
 				}
-				if(isAnimationFinished()) playAnim(getAnimationName(), false, false, animation.curAnim.frames.length - 3);
+			var anim:String = getAnimationName();
+
+			if (anim == null || (anim.substr(0, 5) == "shoot" && isAnimationFinished()))
+					dance();
 		}
 
 		if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
