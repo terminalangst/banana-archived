@@ -84,13 +84,6 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 			'hideHud',
 			BOOL);
 		addOption(option);
-		
-		var option:Option = new Option('Time Bar:',
-			"What should the Time Bar display?",
-			'timeBarType',
-			STRING,
-			['Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
-		addOption(option);
 
 		var option:Option = new Option('Flashing Lights',
 			"Uncheck this if you're sensitive to flashing lights!",
@@ -101,12 +94,6 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Camera Zooms',
 			"If unchecked, the camera won't zoom in on a beat hit.",
 			'camZooms',
-			BOOL);
-		addOption(option);
-
-		var option:Option = new Option('Score Text Grow on Hit',
-			"If unchecked, disables the Score text growing\neverytime you hit a note.",
-			'scoreZoom',
 			BOOL);
 		addOption(option);
 
