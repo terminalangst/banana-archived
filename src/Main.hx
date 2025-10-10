@@ -6,7 +6,7 @@ package;
 import android.content.Context;
 #end
 
-import debug.FPSCounter;
+import funkin.debug.FPSCounter;
 
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
@@ -18,11 +18,11 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
-import states.TitleState;
+import funkin.states.TitleState;
 
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
-import scripting.HScript.HScriptInfos;
+import funkin.backend.scripting.HScript.HScriptInfos;
 #end
 
 #if (linux || mac)
@@ -30,7 +30,7 @@ import lime.graphics.Image;
 #end
 
 #if desktop
-import backend.ALSoftConfig; // Just to make sure DCE doesn't remove this, since it's not directly referenced anywhere else.
+import funkin.backend.ALSoftConfig; // Just to make sure DCE doesn't remove this, since it's not directly referenced anywhere else.
 #end
 
 //crash handler stuff
@@ -40,7 +40,7 @@ import haxe.CallStack;
 import haxe.io.Path;
 #end
 
-import backend.Highscore;
+import funkin.backend.Highscore;
 
 // NATIVE API STUFF, YOU CAN IGNORE THIS AND SCROLL //
 #if (linux && !debug)
@@ -79,7 +79,7 @@ class Main extends Sprite
 		super();
 
 		#if (cpp && windows)
-		backend.Native.fixScaling();
+		funkin.backend.Native.fixScaling();
 		#end
 
 		// Credits to MAJigsaw77 (he's the og author for this code)
@@ -108,8 +108,8 @@ class Main extends Sprite
 				msgInfo += '${newPos.lineNumber}:';
 			}
 			msgInfo += ' $x';
-			if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);
+			/*if (PlayState.instance != null)
+				PlayState.instance.addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);*/
 		}
 		Iris.error = function(x, ?pos:haxe.PosInfos) {
 			Iris.logLevel(ERROR, x, pos);
@@ -120,8 +120,8 @@ class Main extends Sprite
 				msgInfo += '${newPos.lineNumber}:';
 			}
 			msgInfo += ' $x';
-			if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('ERROR: $msgInfo', FlxColor.RED);
+			/*if (PlayState.instance != null)
+				PlayState.instance.addTextToDebug('ERROR: $msgInfo', FlxColor.RED);*/
 		}
 		Iris.fatal = function(x, ?pos:haxe.PosInfos) {
 			Iris.logLevel(FATAL, x, pos);
@@ -132,15 +132,15 @@ class Main extends Sprite
 				msgInfo += '${newPos.lineNumber}:';
 			}
 			msgInfo += ' $x';
-			if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('FATAL: $msgInfo', 0xFFBB0000);
+			/*(if (PlayState.instance != null)
+				PlayState.instance.addTextToDebug('FATAL: $msgInfo', 0xFFBB0000);*/
 		}
 		#end
 
 		var game = new FlxGame(meta.width, meta.height, meta.initialState, meta.framerate, meta.framerate, meta.skipSplash, meta.startFullscreen);
 
 		@:privateAccess
-		game._customSoundTray = objects.FunkinSoundTray;
+		game._customSoundTray = funkin.objects.FunkinSoundTray;
 
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
@@ -212,7 +212,7 @@ class Main extends Sprite
 		dateNow = dateNow.replace(" ", "_");
 		dateNow = dateNow.replace(":", "'");
 
-		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
+		path = "./crash/" + "BananaEngine_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
