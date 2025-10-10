@@ -10,7 +10,7 @@ Check the [instructions here](docs/COMPILING.md).
 * [Kelsey / Terminalangst](https://x.com/terminalangst) - Main programmer of Banana.
 * [Care / chronicsilly](https://x.com/_chronicsilly) - Programmer of Banana.
 * [Brooke / Oofie](https://x.com/scaryjohndoe/) - Programmer of Banana.
-* Oliver / withbolognese - Main branding artist.
+* [Oliver / withbolognese](https://x.com/withbolognese) - Main branding artist.
 ---
 * [FixedData / Data5](https://x.com/_data5) - Giving me a bit of motivation to pick this project up again after 5 months.
 * [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngine) - Fork's base engine. (A bit bootycheeks but it does the job as an engine !)
