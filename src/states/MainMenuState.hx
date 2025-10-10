@@ -109,7 +109,7 @@ class MainMenuState extends MusicBeatState {
 
                 FlxFlicker.flicker(item, 1, 0.06, false, false, function(flick:FlxFlicker) {
                     switch(option) {
-                        case 'storymode' | 'freeplay': MusicBeatState.switchState(new states.FallbackState());
+                        case 'storymode' | 'freeplay': MusicBeatState.switchState(new backend.FallbackState());
                         //case 'freeplay': MusicBeatState.switchState(new states.FreeplayState());
                         case 'credits': MusicBeatState.switchState(new states.CreditsState());
                         case 'options':
