@@ -7,7 +7,6 @@ art/buildScripts/test_x64-debug-officialrelease.bat
 
 ### VS Code
 export/*
-src/unused/*
 .vscode/*
 .haxelib/
 .github/
