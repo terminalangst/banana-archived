@@ -44,7 +44,7 @@ import funkin.backend.Highscore;
 
 // NATIVE API STUFF, YOU CAN IGNORE THIS AND SCROLL //
 #if (linux && !debug)
-@:cppInclude('./external/gamemode_client.h')
+@:cppInclude('./funkin/external/gamemode_client.h')
 @:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
