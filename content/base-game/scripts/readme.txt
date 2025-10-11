@@ -1,3 +1,3 @@
-Put your .lua/.hx scripts here!
+Put your scripts here! (Has to be in the .hx, .hxs, or .hscript file ext.)
 
-Scripts here run everywhere, if you want a script to play only for a specific song, put them in songs/song-name/script.lua or script.hx.
+Scripts run globally if put in this folder, if you want a script to run in a specific song, put it in songs/song-name/script.[insert hscript file ext here].
