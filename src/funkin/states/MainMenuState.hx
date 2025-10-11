@@ -19,6 +19,9 @@ class MainMenuState extends MusicBeatState {
     var selectedSomethin:Bool = false;
 
     override function create() {
+        Paths.clearStoredMemory();
+        Paths.clearUnusedMemory();
+
         super.create();
 
         #if DISCORD_ALLOWED DiscordClient.changePresence("Main Menu", null); #end
@@ -109,8 +112,9 @@ class MainMenuState extends MusicBeatState {
 
                 FlxFlicker.flicker(item, 1, 0.06, false, false, function(flick:FlxFlicker) {
                     switch(option) {
-                        case 'storymode' | 'freeplay': MusicBeatState.switchState(new funkin.backend.FallbackState());
-                        case 'credits': MusicBeatState.switchState(new funkin.states.CreditsState());
+                        case 'storymode': MusicBeatState.switchState(new funkin.backend.FallbackState());
+                        case 'freeplay': MusicBeatState.switchState(new FreeplayState());
+                        case 'credits': MusicBeatState.switchState(new CreditsState());
                         case 'options':
                             MusicBeatState.switchState(new funkin.states.options.OptionsState());
                             /*options.OptionsState.onPlayState = false;

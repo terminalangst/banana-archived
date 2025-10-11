@@ -26,6 +26,7 @@ class MusicBeatState extends FlxState
 		return getState().variables;
 
 	override function create() {
+
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
 		#if MODS_ALLOWED Mods.updatedOnState = false; #end
 
