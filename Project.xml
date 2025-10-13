@@ -170,4 +170,10 @@
 	<icon path="art/icons/icon32.png" size='32'/>
 	<icon path="art/icons/icon64.png" size='64'/>
 	<icon path="art/icons/iconOG.png" />
+
+	<!-- shitty method but fuck you -->
+	<prebuild cmd='clear' if="linux || mac"/>
+	<postbuild cmd='clear' if="linux || mac"/>
+	<prebuild cmd='cls' if="windows"/>
+	<postbuild cmd='cls' if="windows"/>
 </project>
