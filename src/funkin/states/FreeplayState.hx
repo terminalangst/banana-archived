@@ -24,7 +24,7 @@ class FreeplayState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var lerpSelected:Float = 0;
 
-	var curDifficulty:Int = 1;
+	var curDifficulty:Int = -1;
 	private static var curSelected:Int = 0;
 	private static var lastDifficultyName:String = Difficulty.getDefault();
 
@@ -65,8 +65,7 @@ class FreeplayState extends MusicBeatState
 
 		add(grpSongs = new FlxTypedGroup<Alphabet>());
 
-		for (i in 0...songs.length)
-		{
+		for (i in 0...songs.length) {
 			var songText:Alphabet = new Alphabet(90, 320, songs[i].songName, true);
 			songText.isMenuItem = true;
 			songText.targetY = i;
@@ -95,6 +94,7 @@ class FreeplayState extends MusicBeatState
 
 		add(diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24));
 		diffText.font = scoreText.font;
+		
 		add(scoreText);
 		
 		changeSelection();
@@ -113,12 +113,16 @@ class FreeplayState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			MusicBeatState.switchState(new MainMenuState());
 		}
-
-		if(controls.RESET)
+		if (controls.ACCEPT)
 		{
 			persistentUpdate = false;
-			openSubState(new ResetScoreSubState(songs[curSelected].songName, curDifficulty, songs[curSelected].songCharacter));
-			FlxG.sound.play(Paths.sound('scrollMenu'));
+			var songLowercase:String = Paths.formatToSongPath(songs[curSelected].songName);
+			var poop:String = Highscore.formatSong(songLowercase, curDifficulty);
+			Song.loadFromJson(poop, songLowercase);
+			PlayState.isStoryMode = false;
+			PlayState.storyDifficulty = curDifficulty;
+			MusicBeatState.switchState(new PlayState());
+			FlxG.sound.music.stop();
 		}
 
 		lerpScore = Math.floor(FlxMath.lerp(intendedScore, lerpScore, Math.exp(-elapsed * 24)));
@@ -126,10 +130,11 @@ class FreeplayState extends MusicBeatState
 			lerpScore = intendedScore;
 
 		scoreText.text = 'PERSONAL BEST: ' + lerpScore;
-		scoreText.x = FlxG.width - scoreText.width - 5;
+		scoreText.x = FlxG.width - scoreText.width - 6;
 		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
 		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
-		diffText.x = scoreBG.x + (scoreBG.width * 0.5) - (diffText.width * 0.5);
+		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
+		diffText.x -= diffText.width / 2;
 
 		super.update(elapsed);
 	}
@@ -137,10 +142,12 @@ class FreeplayState extends MusicBeatState
 	function changeDiff(change:Int = 0) {
 		curDifficulty = FlxMath.wrap(curDifficulty + change, 0, Difficulty.list.length-1);
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
-
 		lastDifficultyName = Difficulty.getString(curDifficulty, false);
 		var displayDiff:String = Difficulty.getString(curDifficulty);
-		diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+		if (Difficulty.list.length > 1)
+			diffText.text = '< ' + displayDiff.toUpperCase() + ' >';
+		else
+			diffText.text = displayDiff.toUpperCase();
 	}
 
 	function changeSelection(change:Int = 0) {
@@ -167,7 +174,24 @@ class FreeplayState extends MusicBeatState
 		}
 		Mods.currentModDirectory = songs[curSelected].folder;
 		Difficulty.loadFromWeek();
+
+		var savedDiff:String = songs[curSelected].lastDifficulty;
+		var lastDiff:Int = Difficulty.list.indexOf(lastDifficultyName);
+		if(savedDiff != null && !Difficulty.list.contains(savedDiff) && Difficulty.list.contains(savedDiff))
+			curDifficulty = Math.round(Math.max(0, Difficulty.list.indexOf(savedDiff)));
+		else if(lastDiff > -1)
+			curDifficulty = lastDiff;
+		else if(Difficulty.list.contains(Difficulty.getDefault()))
+			curDifficulty = Math.round(Math.max(0, Difficulty.defaultList.indexOf(Difficulty.getDefault())));
+		else
+			curDifficulty = 0;
+
+		changeDiff();
+		_updateSongLastDifficulty();
 	}
+
+	inline private function _updateSongLastDifficulty()
+		songs[curSelected].lastDifficulty = Difficulty.getString(curDifficulty, false);
 
 	public function addSong(songName:String, weekNum:Int, songCharacter:String, color:Int) {
 		songs.push(new SongMetadata(songName, weekNum, songCharacter, color));

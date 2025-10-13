@@ -17,6 +17,9 @@ import funkin.backend.CoolUtil;
 import funkin.backend.MusicBeatState;
 import funkin.backend.MusicBeatSubstate;
 import funkin.backend.CustomFadeTransition;
+import funkin.backend.Highscore;
+import funkin.backend.StageData;
+import funkin.backend.WeekData;
 import funkin.backend.ClientPrefs;
 import funkin.backend.Conductor;
 import funkin.backend.BaseStage;
@@ -28,8 +31,7 @@ import funkin.backend.ui.*; //Psych-UI
 import funkin.objects.Alphabet;
 import funkin.objects.BGSprite;
 
-import funkin.states.PlayState;
-import funkin.states.LoadingState;
+import funkin.states.game.PlayState;
 
 #if flxanimate
 import funkin.flxanimate.*;
