@@ -121,19 +121,19 @@ class Song
 
 	public static var chartPath:String;
 	public static var loadedSongName:String;
-	/*public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
+	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
 	{
 		if(folder == null) folder = jsonInput;
-		//PlayState.SONG = getChart(jsonInput, folder);
+		PlayState.SONG = getChart(jsonInput, folder);
 		loadedSongName = folder;
 		chartPath = _lastPath;
 		#if windows
 		// prevent any saving errors by fixing the path on Windows (being the only OS to ever use backslashes instead of forward slashes for paths)
 		chartPath = chartPath.replace('/', '\\');
 		#end
-		//StageData.loadDirectory(PlayState.SONG);
-		return; //PlayState.SONG;
-	}*/
+		StageData.loadDirectory(PlayState.SONG);
+		return PlayState.SONG;
+	}
 
 	static var _lastPath:String;
 	public static function getChart(jsonInput:String, ?folder:String):SwagSong
