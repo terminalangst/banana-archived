@@ -144,8 +144,13 @@ class PlayState extends MusicBeatState
 
 	public var introSoundsSuffix:String = '';
 
-	// Less laggy controls
-	private var keysArray:Array<String>;
+	// r we deadass
+	private var keysArray:Array<String> = [
+		'note_left',
+		'note_down',
+		'note_up',
+		'note_right'
+	];
 	public var songName:String;
 
 	// Callbacks for stages
@@ -169,13 +174,6 @@ class PlayState extends MusicBeatState
 
 		PauseSubState.songName = null; //Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
-
-		keysArray = [
-			'note_left',
-			'note_down',
-			'note_up',
-			'note_right'
-		];
 
 		if(FlxG.sound.music != null)
 			FlxG.sound.music.stop();
