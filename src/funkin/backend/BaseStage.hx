@@ -151,7 +151,7 @@ class BaseStage extends FlxBasic
 	inline private function get_members() return game.members;
 
 	inline private function get_game() return cast FlxG.state;
-	inline private function get_onPlayState() return (Std.isOfType(FlxG.state, funkin.states.PlayState));
+	inline private function get_onPlayState() return (Std.isOfType(FlxG.state, funkin.states.game.PlayState));
 
 	inline private function get_boyfriend():Character return game.boyfriend;
 	inline private function get_dad():Character return game.dad;

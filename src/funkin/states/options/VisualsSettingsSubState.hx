@@ -277,8 +277,8 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	#if !mobile
 	function onChangeFPSCounter()
 	{
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = ClientPrefs.data.showFPS;
+		if(Main.counter != null)
+			Main.counter.visible = ClientPrefs.data.showFPS;
 	}
 	#end
 }

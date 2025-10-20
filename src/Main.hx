@@ -1,251 +1,127 @@
 package;
 
-/** TO-DO: rewrite this thing too at some point **/
+#if desktop import funkin.backend.ALSoftConfig; #end // just so DCE doesn't remove this.
 
-#if android
-import android.content.Context;
-#end
-
-import funkin.debug.FPSCounter;
-
-import flixel.graphics.FlxGraphic;
-import flixel.FlxGame;
-import flixel.FlxState;
-import haxe.io.Path;
-import openfl.Assets;
-import openfl.Lib;
-import openfl.display.Sprite;
-import openfl.events.Event;
-import openfl.display.StageScaleMode;
-import lime.app.Application;
-import funkin.states.TitleState;
-
-#if HSCRIPT_ALLOWED
-import crowplexus.iris.Iris;
-import funkin.backend.scripting.HScript.HScriptInfos;
-#end
-
-#if (linux || mac)
-import lime.graphics.Image;
-#end
-
-#if desktop
-import funkin.backend.ALSoftConfig; // Just to make sure DCE doesn't remove this, since it's not directly referenced anywhere else.
-#end
-
-//crash handler stuff
-#if CRASH_HANDLER
-import openfl.events.UncaughtErrorEvent;
-import haxe.CallStack;
-import haxe.io.Path;
-#end
-
-import funkin.backend.Highscore;
-
-// NATIVE API STUFF, YOU CAN IGNORE THIS AND SCROLL //
 #if (linux && !debug)
 @:cppInclude('./funkin/external/gamemode_client.h')
 @:cppFileCode('#define GAMEMODE_AUTO')
 #end
 
+class Main extends openfl.display.Sprite {
+    // versions (inspired from NightmareVision)
+    public static final bananaVersion = '0.1.0';
+    public static final psychVersion = '1.0.4';
+    public static final funkinVersion = '0.2.8';
 
-class Main extends Sprite
-{
-	// versions (highkey hella inspired from NMV)
-	public static final psychVersion = '1.0.4';
-	public static final bananaVersion = '0.1.0';
-	public static final funkinVersion = '0.2.8'; // shadowmario what r we doin
-	
-	public static final meta = {
-		width: 1280, // WINDOW width
-		height: 720, // WINDOW height
-		initialState: Init, // initial game state
-		framerate: 60, // default framerate
-		skipSplash: true, // if the default flixel splash screen should be skipped
-		startFullscreen: false // if the game should start at fullscreen mode
-	};
+    public static var counter:funkin.backend.FPSCounter;
+    public static final meta = { width: 1280, height: 720, initialState: funkin.backend.Init, framerate: 60, skipSplash: true, startFullscreen: false }; // i do not need to explain what each thing in this fucking variable does.
 
-	public static var fpsVar:FPSCounter;
+    // ignore everything after this comment, your code should go into scripts, or onto the states if you're hardcoding.
 
-	// You can pretty much ignore everything from here on - your code should go in your states.
+    public static function main():Void openfl.Lib.current.addChild(new Main());
 
-	public static function main():Void
-	{
-		Lib.current.addChild(new Main());
-	}
+    public function new() {
+        super();
 
-	public function new()
-	{
-		super();
+        #if (cpp && windows) funkin.backend.Native.fixScaling(); #end
+        #if VIDEOS_ALLOWED hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end); #end
 
-		#if (cpp && windows)
-		funkin.backend.Native.fixScaling();
-		#end
+        Mods.loadTopMod();
+        FlxG.save.bind('funkin', CoolUtil.getSavePath());
+        funkin.backend.Highscore.load();
 
-		// Credits to MAJigsaw77 (he's the og author for this code)
-		#if android
-		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));
-		#elseif ios
-		Sys.setCwd(lime.system.System.applicationStorageDirectory);
-		#end
-		#if VIDEOS_ALLOWED
-		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0")  ['--no-lua'] #end);
-		#end
-
-		Mods.loadTopMod();
-
-		FlxG.save.bind('funkin', CoolUtil.getSavePath());
-		Highscore.load();
-
-
-		#if HSCRIPT_ALLOWED
-		Iris.warn = function(x, ?pos:haxe.PosInfos) {
-			Iris.logLevel(WARN, x, pos);
-			var newPos:HScriptInfos = cast pos;
+        #if HSCRIPT_ALLOWED
+		crowplexus.iris.Iris.warn = function(x, ?pos:haxe.PosInfos) {
+			crowplexus.iris.Iris.logLevel(WARN, x, pos);
+			var newPos:funkin.backend.scripting.HScript.HScriptInfos = cast pos;
 			if (newPos.showLine == null) newPos.showLine = true;
 			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
-			if (newPos.showLine == true) {
-				msgInfo += '${newPos.lineNumber}:';
-			}
+			if (newPos.showLine == true) msgInfo += '${newPos.lineNumber}:';
 			msgInfo += ' $x';
-			/*if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);*/
+			/*if (PlayState.instance != null) PlayState.instance.addTextToDebug('WARNING: $msgInfo', FlxColor.YELLOW);*/
 		}
-		Iris.error = function(x, ?pos:haxe.PosInfos) {
-			Iris.logLevel(ERROR, x, pos);
-			var newPos:HScriptInfos = cast pos;
+		crowplexus.iris.Iris.error = function(x, ?pos:haxe.PosInfos) {
+			crowplexus.iris.Iris.logLevel(ERROR, x, pos);
+			var newPos:funkin.backend.scripting.HScript.HScriptInfos = cast pos;
 			if (newPos.showLine == null) newPos.showLine = true;
 			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
-			if (newPos.showLine == true) {
-				msgInfo += '${newPos.lineNumber}:';
-			}
+			if (newPos.showLine == true) msgInfo += '${newPos.lineNumber}:';
 			msgInfo += ' $x';
-			/*if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('ERROR: $msgInfo', FlxColor.RED);*/
+			/*if (PlayState.instance != null) PlayState.instance.addTextToDebug('ERROR: $msgInfo', FlxColor.RED);*/
 		}
-		Iris.fatal = function(x, ?pos:haxe.PosInfos) {
-			Iris.logLevel(FATAL, x, pos);
-			var newPos:HScriptInfos = cast pos;
+		crowplexus.iris.Iris.fatal = function(x, ?pos:haxe.PosInfos) {
+			crowplexus.iris.Iris.logLevel(FATAL, x, pos);
+			var newPos:funkin.backend.scripting.HScript.HScriptInfos = cast pos;
 			if (newPos.showLine == null) newPos.showLine = true;
 			var msgInfo:String = (newPos.funcName != null ? '(${newPos.funcName}) - ' : '')  + '${newPos.fileName}:';
-			if (newPos.showLine == true) {
-				msgInfo += '${newPos.lineNumber}:';
-			}
+			if (newPos.showLine == true) msgInfo += '${newPos.lineNumber}:';
 			msgInfo += ' $x';
-			/*(if (PlayState.instance != null)
-				PlayState.instance.addTextToDebug('FATAL: $msgInfo', 0xFFBB0000);*/
+			/*(if (PlayState.instance != null) PlayState.instance.addTextToDebug('FATAL: $msgInfo', 0xFFBB0000);*/
 		}
-		#end
+        #end
 
-		var game = new FlxGame(meta.width, meta.height, meta.initialState, meta.framerate, meta.framerate, meta.skipSplash, meta.startFullscreen);
+        var game = new flixel.FlxGame(meta.width, meta.height, meta.initialState, meta.framerate, meta.framerate, meta.skipSplash, meta.startFullscreen);
+        @:privateAccess game._customSoundTray = funkin.objects.FunkinSoundTray;
+        addChild(game);
 
-		@:privateAccess
-		game._customSoundTray = funkin.objects.FunkinSoundTray;
+        Controls.instance = new Controls();
+        ClientPrefs.loadDefaultKeys();
 
-		Controls.instance = new Controls();
-		ClientPrefs.loadDefaultKeys();
-		addChild(game);
+        #if !mobile 
+        counter = new funkin.backend.FPSCounter(10, 3, 0xFFFFFF);
+        addChild(counter);
+        openfl.Lib.current.stage.align = "tl";
+        openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;
+        #end
 
-		#if !mobile
-		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
-		addChild(fpsVar);
-		Lib.current.stage.align = "tl";
-		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.data.showFPS;
-		}
-		#end
+        #if (linux || mac) 
+        var icon = lime.graphics.Image.fromFile("icon.png");
+        openfl.Lib.current.stage.window.setIcon(icon);
+        #end
 
-		#if (linux || mac) // fix the app icon not showing up on the Linux Panel / Mac Dock
-		var icon = Image.fromFile("icon.png");
-		Lib.current.stage.window.setIcon(icon);
-		#end
+        #if CRASH_HANDLER openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(openfl.events.UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash); #end
+        #if DISCORD_ALLOWED DiscordClient.prepare(); #end
 
-		#if html5
-		FlxG.autoPause = false;
-		FlxG.mouse.visible = false;
-		#end
+        // shader coords fix or smth
+        FlxG.signals.gameResized.add(function (w, h) {
+            if (FlxG.cameras != null) for (cam in FlxG.cameras.list) if (cam != null && cam.filters != null) resetSpriteCache(cam.flashSprite);
+            if (FlxG.game != null) resetSpriteCache(FlxG.game);
+        });
+    }
 
-		FlxG.fixedTimestep = false;
-		FlxG.game.focusLostFramerate = 60;
-		FlxG.keys.preventDefaultKeys = [TAB];
-		
-		#if CRASH_HANDLER
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-		#end
+    static function resetSpriteCache(sprite:openfl.display.Sprite):Void { @:privateAccess { sprite.__cacheBitmap = null; sprite.__cacheBitmapData = null; } }
 
-		#if DISCORD_ALLOWED
-		DiscordClient.prepare();
-		#end
-
-		// shader coords fix
-		FlxG.signals.gameResized.add(function (w, h) {
-		     if (FlxG.cameras != null) {
-			   for (cam in FlxG.cameras.list) {
-				if (cam != null && cam.filters != null)
-					resetSpriteCache(cam.flashSprite);
-			   }
-			}
-
-			if (FlxG.game != null)
-			resetSpriteCache(FlxG.game);
-		});
-	}
-
-	static function resetSpriteCache(sprite:Sprite):Void {
-		@:privateAccess {
-		        sprite.__cacheBitmap = null;
-			sprite.__cacheBitmapData = null;
-		}
-	}
-
-	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
-	// very cool person for real they don't get enough credit for their work
-	#if CRASH_HANDLER
-	function onCrash(e:UncaughtErrorEvent):Void
-	{
+    // following code is by SqirraMoon ! I cleaned it up a 'lil.
+    #if CRASH_HANDLER
+    function onCrash(e:openfl.events.UncaughtErrorEvent):Void {
 		var errMsg:String = "";
 		var path:String;
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+		var callStack:Array<haxe.CallStack.StackItem> = haxe.CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
 
-		dateNow = dateNow.replace(" ", "_");
-		dateNow = dateNow.replace(":", "'");
+        dateNow = dateNow.replace(" ", "-");
+        dateNow = dateNow.replace(":", ",");
+        path = "./crash" + "BananaEngine_" + dateNow + ".txt";
 
-		path = "./crash/" + "BananaEngine_" + dateNow + ".txt";
+        for (stackItem in callStack) {
+            switch (stackItem) {
+                case FilePos(s, file, line, column): errMsg += file + "(line " + line + ")\n";
+                default: Sys.println(stackItem);
+            }
+        }
+        errMsg += "\nUncaught Error: " + e.error;
+        errMsg += "\nPlease report this error to the Github Page: https://github.com/terminalangst/BananaEngine";
+        errMsg += "\n\n> Crash Handler written by: sqirra-rng / SqirraMoon";
 
-		for (stackItem in callStack)
-		{
-			switch (stackItem)
-			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
-			}
-		}
+        if (!FileSystem.exists("./crash/")) FileSystem.createDirectory("./crash/");
+        File.saveContent(path, errMsg + "\n");
 
-		errMsg += "\nUncaught Error: " + e.error;
-		// remove if you're modding and want the crash log message to contain the link
-		// please remember to actually modify the link for the github page to report the issues to.
-		#if officialBuild
-		errMsg += "\nPlease report this error to the GitHub page: https://github.com/ShadowMario/FNF-PsychEngine";
-		#end
-		errMsg += "\n\n> Crash Handler written by: sqirra-rng";
+        Sys.println(errMsg);
+		Sys.println("Crash dump saved in " + haxe.io.Path.normalize(path));
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
-
-		File.saveContent(path, errMsg + "\n");
-
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
-
-		Application.current.window.alert(errMsg, "Error!");
-		#if DISCORD_ALLOWED
-		DiscordClient.shutdown();
-		#end
-		Sys.exit(1);
-	}
-	#end
+        lime.app.Application.current.window.alert(errMsg, "Error!");
+        #if DISCORD_ALLOWED DiscordClient.shutdown(); #end
+        Sys.exit(1);
+    }
+    #end
 }

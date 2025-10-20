@@ -1,4 +1,4 @@
-package;
+package funkin.backend;
 
 /** MMM, BANANA! **/
 
@@ -13,6 +13,7 @@ class Init extends MusicBeatState {
         if (FlxG.save.data.weekCompleted != null) funkin.states.StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
 
         // Flixel defaults !
+        FlxG.fixedTimestep = false;
         FlxG.game.focusLostFramerate = 60;
         FlxG.keys.preventDefaultKeys = [TAB];
 		FlxG.mouse.visible = false;
