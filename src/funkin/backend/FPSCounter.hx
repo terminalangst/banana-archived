@@ -13,7 +13,7 @@ class FPSCounter extends TextField {
     public var memoryPeak:Float = 0;
     @:noCompletion private var times:Array<Float>;
 
-    public function new(x:Float = 8.5, y:Float = 10, col:Int = 0x000000) {
+    public function new(x:Float = 10, y:Float = 3 , col:Int = 0x000000) {
         super();
 
         this.x = x;
@@ -30,7 +30,7 @@ class FPSCounter extends TextField {
         autoSize = LEFT;
         multiline = true;
 
-        defaultTextFormat = new TextFormat("roboto.ttf", 14, col);
+        defaultTextFormat = new TextFormat("vcr.ttf", 14, col);
         text = '0 FPS || 0MB / 0MB';
 
         times = [];
