@@ -1,5 +1,7 @@
 package funkin.states.game;
 
+/** BASE PSYCH PLAYSTATE WITH HELLA LINES SHAVED OFF. (Will be kept in the source code until the actual rewrite is done.) **/
+
 import funkin.backend.Song;
 import funkin.backend.Rating;
 
@@ -25,8 +27,6 @@ import openfl.filters.ShaderFilter;
 import funkin.objects.shaders.ErrorHandledShader;
 import funkin.objects.Note.EventNote;
 import funkin.objects.*;
-
-// playstate the sequel dequel
 
 class PlayState extends MusicBeatState
 {
