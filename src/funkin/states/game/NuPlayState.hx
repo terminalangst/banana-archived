@@ -7,7 +7,6 @@ import funkin.states.game.Modifiers;
 
 import haxe.Json;
 import flixel.input.keyboard.FlxKey;
-import openfl.events.KeyboardEvent;
 #if !flash import openfl.filters.ShaderFilter; #end
 
 class NuPlayState extends MusicBeatState {
@@ -78,7 +77,7 @@ class NuPlayState extends MusicBeatState {
 	public var camGame:FlxCamera; // default camera target
 	public var camCountdown:FlxCamera;
     public var cameraSpeed:Float = 1;
-    public var defaultCamZoom:Float = 1.05;
+    public var defaultCamZoom:Float;
     public var daPixelZoom:Float = 6; // so the pixel sprites don't look stretched.
 
     // score n' miss
@@ -141,8 +140,50 @@ class NuPlayState extends MusicBeatState {
         FlxG.cameras.add(camCountdown, false);
         persistentUpdate = persistentDraw = true;
         
+        Conductor.mapBPMChanges(SONG);
+        Conductor.bpm = SONG.bpm;
 
+        songName = Paths.formatToSongPath(SONG.song);
+        if (SONG.stage == null || SONG.stage.length < 1) SONG.stage = StageData.vanillaSongStage(Paths.formatToSongPath(funkin.backend.Song.loadedSongName));
+        curStage = SONG.stage;
+
+        var stageData:StageFile = StageData.getStageFile(curStage);
+        defaultCamZoom = stageData.defaultZoom;
+        if (stageData.stageUI != null && stageData.stageUI.trim().length > 0) stageUI = stageData.stageUI;
+        else stageUI = stageData.isPixelStage == true ? "pixel" : "normal";
+
+        dad = new Character(0, 0, SONG.player2);
+        bf = new Character(0, 0, SONG.player1, true);
+
+        var comboGroup:FlxSpriteGroup = new FlxSpriteGroup();
+        add(comboGroup);
+        var noteGroup:FlxTypedGroup<flixel.FlxBasic> = new FlxTypedGroup<flixel.FlxBasic>();
+        add(noteGroup);
+        noteGroup.add(strumline);
+        noteGroup.add(noteSplashGrp);
+
+        FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
+        noteGroup.cameras = comboGroup.cameras = [camHUD];
+
+        startingSong = true;
+        //FlxG.stage.addEventListener(openfl.events.KeyboardEvent.KEY_DOWN, onKeyPress);
+        //FlxG.stage.addEventListener(openfl.events.KeyboardEvent.KEY_UP, onKeyRelease);
+
+
+        // Precaching stuff to prevent lag spikes
+        if(ClientPrefs.data.hitsoundVolume > 0) Paths.sound('hitsound');
+        for (i in 1...4) Paths.sound('missnote$i');
+        Paths.image('alphabet');
+        if (funkin.states.substates.PauseSubState.songName != null) Paths.music(funkin.states.substates.PauseSubState.songName);
+        else if (Paths.formatToSongPath(ClientPrefs.data.pauseMusic) != 'none') Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic));
+
+        var splash:NoteSplash = new NoteSplash();
+        noteSplashGrp.add(splash);
+        splash.alpha = 0.000001;
         super.create();
+
+        /*cacheCountdown();
+		cachePopUpScore();*/
     }
 
     function set_songSpeed(value:Float):Float {
