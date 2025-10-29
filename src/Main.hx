@@ -13,7 +13,7 @@ class Main extends openfl.display.Sprite {
     public static final psychVersion = '1.0.4';
     public static final funkinVersion = '0.2.8';
 
-    public static var counter:funkin.backend.FPSCounter;
+    public static var counter:funkin.backend.fps.FPS;
     public static final meta = { width: 1280, height: 720, initialState: funkin.backend.Init, framerate: 60, skipSplash: true, startFullscreen: false }; // i do not need to explain what each thing in this fucking variable does.
 
     // ignore everything after this comment, your code should go into scripts, or onto the states if you're hardcoding.
@@ -68,7 +68,7 @@ class Main extends openfl.display.Sprite {
         ClientPrefs.loadDefaultKeys();
 
         #if !mobile 
-        counter = new funkin.backend.FPSCounter(10, 3, 0xFFFFFF);
+        counter = new funkin.backend.fps.FPS();
         addChild(counter);
         openfl.Lib.current.stage.align = "tl";
         openfl.Lib.current.stage.scaleMode = openfl.display.StageScaleMode.NO_SCALE;

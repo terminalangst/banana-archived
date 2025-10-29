@@ -1,4 +1,4 @@
-package funkin.backend;
+package funkin.backend.fps;
 
 import haxe.Timer;
 import openfl.text.TextField;
@@ -6,7 +6,7 @@ import openfl.text.TextFormat;
 import flixel.FlxG;
 import flixel.util.FlxStringUtil;
 
-class FPSCounter extends TextField {
+class Counter extends TextField {
     public var currentFPS(default, null):Int;
     // iirc this just shows the garbage collector memory, sooo.. it's literally inaccurate
     public var memory(get, never):Float;
@@ -20,9 +20,6 @@ class FPSCounter extends TextField {
         this.y = y;
 
         currentFPS = 0;
-
-        background = true;
-        backgroundColor = 0x000000;
         visible = ClientPrefs.data.showFPS;
 
         selectable = false;

@@ -22,7 +22,7 @@ class Init extends MusicBeatState {
         super.create();
 
         // This method is NOT ass, DON'T kill yourself, Kelsey from September 25th 2025! :D (Oh yeah, I borrowed this method from data5 LMFAO, haii data!)
-        var openinState:Class<MusicBeatState> = FlxG.save.data.flashing == null && !funkin.states.FlashingState.leftState ? funkin.states.FlashingState : funkin.states.TitleState;
+        var openinState:Class<MusicBeatState> = FlxG.save.data.flashing == null && !funkin.states.WarningState.leftState ? funkin.states.WarningState : funkin.states.TitleState;
         MusicBeatState.switchState(Type.createInstance(openinState, []));
     }
 }
