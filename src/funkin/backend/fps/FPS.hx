@@ -9,9 +9,7 @@ class FPS extends openfl.display.Sprite {
     var _bitmap(get, null):BitmapData;
     var _color:FlxColor = 0xFF000000;
 
-    function get__bitmap():BitmapData {
-        return new BitmapData(1, 1, _color);
-    }
+    function get__bitmap():BitmapData return new BitmapData(1, 1, _color);
 
     public var counter:funkin.backend.fps.Counter;
     public var bg:Bitmap;
