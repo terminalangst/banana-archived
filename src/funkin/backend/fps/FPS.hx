@@ -3,18 +3,14 @@ package funkin.backend.fps;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 
-/** Code originally by GhostGlowDev, I cleaned it up a bit **/
+/** Code originally by GhostglowDev, I cleaned it up a bit **/
 
 class FPS extends openfl.display.Sprite {
-    var _bitmap(get, default):BitmapData;
-    var _color(default, set):Int = 0xFF000000;
+    var _bitmap(get, null):BitmapData;
+    var _color:FlxColor = 0xFF000000;
 
-    function get__bitmap():BitmapData return new BitmapData(1, 1, _color);
-    function set__color(value:Int):Int {
-        _color = value;
-        get__bitmap();
-
-        return _color;
+    function get__bitmap():BitmapData {
+        return new BitmapData(1, 1, _color);
     }
 
     public var counter:funkin.backend.fps.Counter;
@@ -23,13 +19,12 @@ class FPS extends openfl.display.Sprite {
     public function new() {
         super();
 
-        if (_bitmap == null) _bitmap = new BitmapData(1, 1, _color);
-
         addChild(bg = new Bitmap(_bitmap));
         bg.alpha = 0.6;
-        bg.visible = ClientPrefs.data.showFPS;
 
-        addChild(counter = new funkin.backend.fps.Counter(10, 3, 0xFFFFFF));
+        addChild(counter = new Counter(10, 3, 0xFFFFFF));
+
+        visible = ClientPrefs.data.showFPS;
     }
 
     private override function __enterFrame(deltaTime:Float) {
