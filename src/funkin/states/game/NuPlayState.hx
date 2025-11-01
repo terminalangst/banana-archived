@@ -111,7 +111,6 @@ class NuPlayState extends MusicBeatState {
     private static var _lastModDir:String = '';
 
     override public function create() {
-        trace('banana');
 
         _lastModDir = Mods.currentModDirectory;
         Paths.clearStoredMemory();
@@ -129,17 +128,18 @@ class NuPlayState extends MusicBeatState {
         Modifiers.practiceMode = ClientPrefs.getGameplaySetting('practice');
         Modifiers.cpuControlled = ClientPrefs.getGameplaySetting('botplay');
         Modifiers.guitarHeroSustains = ClientPrefs.data.guitarHeroSustains;
-        
+
         // camera init shit
         camGame = initPsychCamera();
         camHUD = new FlxCamera();
         camCountdown = new FlxCamera();
         camHUD.bgColor.alpha = camCountdown.bgColor.alpha = 0;
 
+        FlxG.cameras.add(camGame, true);
         FlxG.cameras.add(camHUD, false);
         FlxG.cameras.add(camCountdown, false);
         persistentUpdate = persistentDraw = true;
-        
+
         Conductor.mapBPMChanges(SONG);
         Conductor.bpm = SONG.bpm;
 
@@ -182,8 +182,8 @@ class NuPlayState extends MusicBeatState {
         splash.alpha = 0.000001;
         super.create();
 
-        /*cacheCountdown();
-		cachePopUpScore();*/
+        cacheCountdown();
+		// cachePopUpScore();
     }
 
     function set_songSpeed(value:Float):Float {
@@ -218,5 +218,43 @@ class NuPlayState extends MusicBeatState {
         playbackRate = 1.0;
         #end
         return playbackRate;
+    }
+
+    // function start_n_end() if (endingSong) endSong(); else startCountdown();
+
+    var startTimer:Null<FlxTimer> = null;
+    var endTimer:Null<FlxTimer> = null;
+
+    // Countdown sprites for ability to tweak 'em thru scripts.
+    public var ready:FlxSprite;
+    public var set:FlxSprite;
+    public var go:FlxSprite;
+    public static var startOnTime:Float = 0;
+
+    function cacheCountdown() {
+        var intAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
+        var intArray:Array<String> = switch(stageUI) {
+            case "normal": ["ready", "set", "go"];
+            case "pixel": ["pixelUI/ready-pixel", "pixelUI/set-pixel", "pixelUI/go-pixel"];
+            default: ['${uiPrefix}/ready${uiPostfix}', '${uiPrefix}/set${uiPostfix}', '${uiPrefix}/go${uiPostfix}'];
+        }
+        intAssets.set(stageUI, intArray);
+        var intAlts:Array<String> = intAssets.get(stageUI);
+        for (asset in intAlts) Paths.image(asset);
+
+        for (i in 1...3) Paths.sound('intro' + [i] + introSuffix);
+        Paths.sound('introGo' + introSuffix);
+    }
+
+    function startCountdown() {
+        /*if (startedCountdown) return false;
+
+        seenCutscene = true;
+        inCutscene = false;
+        canPause = true;*/
+
+        Conductor.songPosition = -Conductor.crochet * 5 + Conductor.offset;
+
+        var swagCounter:Int = 0;
     }
 }

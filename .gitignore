@@ -12,6 +12,7 @@ export/*
 .github/
 *.code-workspace
 vs_Community.exe
+.directory
 # Local history which shouldn't be shared.
 .history
 .ionide
