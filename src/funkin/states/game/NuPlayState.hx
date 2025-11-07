@@ -249,12 +249,17 @@ class NuPlayState extends MusicBeatState {
     function startCountdown() {
         /*if (startedCountdown) return false;
 
-        seenCutscene = true;
-        inCutscene = false;
-        canPause = true;*/
+        seenCutscene = canPause =true;
+        inCutscene = false;*/
 
         Conductor.songPosition = -Conductor.crochet * 5 + Conductor.offset;
 
         var swagCounter:Int = 0;
+        /*if (startOnTime > 0) {
+            clearNotesBefore(startOnTime);
+            setSongTime(startOnTime - 350);
+            return true;
+        }*/
+
     }
 }
